@@ -1,0 +1,23 @@
+KABIR SINGH
+Email: kabir.singh@example.com
+Phone: +91-90000-10003
+
+SUMMARY
+Software engineer with full-time and internship experience.
+
+SKILLS
+Python, Java, SQL, Git, AWS
+
+WORK EXPERIENCE
+Software Engineer | Northstar Software
+Jan 2024 - Dec 2025
+- Built backend services and maintained production APIs.
+
+INTERNSHIP EXPERIENCE
+Software Engineering Intern | BrightByte Technologies
+May 2023 - Aug 2023
+- Implemented API endpoints and wrote unit tests.
+
+PROJECTS
+Inventory Service
+- Created a small inventory management application.

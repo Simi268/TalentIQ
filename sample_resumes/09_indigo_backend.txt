@@ -1,0 +1,9 @@
+Indigo Example
+indigo@example.test | +1 555 010 1009
+Backend engineer with 8 years of professional experience.
+Experience
+Built Python, FastAPI and PostgreSQL services. Led code reviews and CI/CD.
+Education
+Bachelor of Computer Science
+Skills
+Python, FastAPI, PostgreSQL, Docker, Git, leadership

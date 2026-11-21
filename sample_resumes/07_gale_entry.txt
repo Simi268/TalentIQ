@@ -1,0 +1,11 @@
+Gale Example
+gale@example.test | +1 555 010 1007
+Entry level developer. Internship experience, 0 years professional experience.
+Internships
+Three month internship building a Python web demo.
+Projects
+Academic project: text classification with scikit-learn.
+Education
+Bachelor of Computer Applications
+Skills
+Python, scikit-learn, machine learning

@@ -1,0 +1,658 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TalentIQ - AI-powered resume matching and candidate intelligence platform.">
+    <title>TalentIQ | AI Recruitment Intelligence</title>
+    <link rel="stylesheet" href="/frontend/css/styles.css?v=0.5">
+</head>
+<body>
+    <div class="shell">
+        <aside class="side">
+            <div class="brand">Talent<i>IQ</i></div>
+            <nav class="sidebar-nav">
+                <button type="button" class="nav on" data-page="overview">
+    [CI] &nbsp; Candidate Intelligence
+</button>
+
+<button type="button" class="nav" data-page="jobs">
+    [JD] &nbsp; Job Descriptions
+</button>
+
+<button type="button" class="nav" data-page="resumes">
+    [R] &nbsp; Resume Processing
+</button>
+
+<button type="button" class="nav" data-page="settings">
+    [S] &nbsp; Settings
+</button>
+            </nav>
+            <div class="sidebar-footer">Evidence-based hiring<br>Local workspace Â· v0.2</div>
+        </aside>
+
+        <main class="main">
+            <!-- HEADER -->
+
+            <header class="top">
+
+                <div>
+
+                    <div class="eyebrow">
+                        Recruitment Intelligence
+                    </div>
+
+                    <h1 id="page-title">
+                        Candidate Overview
+                    </h1>
+
+                </div>
+
+                <select
+                    id="jobpick"
+                    class="jobpick"
+                    onchange="selectJob()"
+                >
+
+                    <option value="">
+                        Select a role
+                    </option>
+
+                </select>
+
+            </header>
+            <section class="page active" id="page-overview">
+            <!-- ======================================
+                 DASHBOARD METRICS
+            ======================================= -->
+
+            <section class="cards">
+
+                <div class="card metric">
+
+                    <label>
+                        Total Candidates
+                    </label>
+
+                    <strong id="mcount">
+                        0
+                    </strong>
+
+                    <small>
+                        In this role
+                    </small>
+
+                </div>
+
+
+                <div class="card metric">
+
+                    <label>
+                        Average Match
+                    </label>
+
+                    <strong id="mavg">
+                        â€”
+                    </strong>
+
+                    <small id="mavg-note">
+                        Average of available scores
+                    </small>
+
+                </div>
+
+
+                <div class="card metric">
+
+                    <label>
+                        Strong Matches
+                    </label>
+
+                    <strong id="mstrong">
+                        0
+                    </strong>
+
+                    <small>
+                        Score >= 75%
+                    </small>
+
+                </div>
+
+
+                <div class="card metric">
+
+                    <label>
+                        Processing Issues
+                    </label>
+
+                    <strong id="mfail">
+                        0
+                    </strong>
+
+                    <small>
+                        Individual file failures
+                    </small>
+
+                </div>
+
+                <div class="card metric">
+                    <label>Fully Evaluated</label>
+                    <strong id="mevaluated">0/0</strong>
+                    <small>Complete scoring evaluations</small>
+                </div>
+
+                <div class="card metric">
+                    <label>Scoring Completeness</label>
+                    <strong id="mcoverage">â€”</strong>
+                    <small>Applicable scoring weight evaluated</small>
+                </div>
+                <div class="card metric">
+                    <label>Average Required-Skill Coverage</label>
+                    <strong id="mskillcoverage">â€”</strong>
+                    <small>Exact required skills evidenced in resumes</small>
+                </div>
+
+            </section>
+            <!-- ======================================
+                 CANDIDATE RANKING
+            ======================================= -->
+
+            <section class="panel">
+
+                <div class="sectionhead">
+
+                    <div>
+
+                        <h2>
+                            Candidate Ranking
+                        </h2>
+
+                        <div class="muted">
+
+                            Scores summarize documented,
+                            job-related evidence; they are decision-support signals, not hiring decisions.
+                            Select candidates to compare.
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <button
+                            class="secondary"
+                            onclick="compareSelected()"
+                        >
+                            Compare Selected
+                        </button>
+
+
+                        <button
+                            class="secondary"
+                            onclick="showRankingExplanation()"
+                        >
+                            Explain Ranking
+                        </button>
+
+
+                        <button
+                            class="secondary"
+                            id="recalculate-button"
+                            onclick="recalculateCandidates()"
+                        >
+                            Recalculate scores
+                        </button>
+
+                        <button
+                            class="secondary"
+                            onclick="exportCsv()"
+                        >
+                            Export CSV 
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Candidate table -->
+
+                <div class="tablewrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Rank
+                                </th>
+
+                                <th>
+                                    Candidate
+                                </th>
+
+                                <th>
+                                    Match
+                                </th>
+
+                                <th>
+                                    Evaluation & Coverage
+                                </th>
+
+                                <th>
+                                    Experience
+                                </th>
+
+                                <th>
+                                    Required Skills
+                                </th>
+
+                                <th>
+                                    Missing / Unverified
+                                </th>
+
+                                <th></th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="tbody">
+
+                            <tr>
+
+                                <td
+                                    colspan="8"
+                                    class="muted"
+                                >
+
+                                    Create a job description
+                                    to begin.
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+            <!-- ======================================
+                 ANALYTICS
+            ======================================= -->
+
+            <div class="grid2">
+
+
+                <!-- MATCH DISTRIBUTION -->
+
+                <section class="panel">
+
+                    <div class="sectionhead">
+
+                        <h2>
+                            Match Score Distribution
+                        </h2>
+
+                        <span class="muted">
+                            Current candidate set
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="chart"
+                        id="distribution"
+                    ></div>
+
+                </section>
+
+
+                <!-- RECENT ACTIVITY -->
+
+                <section class="panel">
+
+                    <div class="sectionhead">
+
+                        <h2>
+                            Recent Processing Activity
+                        </h2>
+
+                    </div>
+
+
+                    <div
+                        id="activity"
+                        class="muted"
+                    >
+
+                        No resumes processed yet.
+
+                    </div>
+
+                </section>
+
+            </div>
+
+            <!-- RECRUITER ANALYTICS -->
+            <div class="grid2 recruiter-analytics">
+                <section class="panel">
+                    <div class="sectionhead">
+                        <div>
+                            <h2>Hiring Signal Overview</h2>
+                            <div class="muted">Evidence-backed distribution across this candidate pool</div>
+                        </div>
+                    </div>
+                    <div id="hiring-signals" class="analytics-list">
+                        <span class="muted">Upload resumes to generate hiring signals.</span>
+                    </div>
+                </section>
+                <section class="panel">
+                    <div class="sectionhead">
+                        <div>
+                            <h2>Required Skill Coverage</h2>
+                            <div class="muted">How many candidates show evidence for each required skill</div>
+                        </div>
+                    </div>
+                    <div id="required-skill-analytics" class="analytics-list">
+                        <span class="muted">Create a job description to see skill coverage.</span>
+                    </div>
+                </section>
+            </div>
+            </section>
+
+            <section class="page" id="page-jobs">
+            <!-- ======================================
+                 JOB DESCRIPTION SECTION
+            ======================================= -->
+
+            <section
+                class="panel"
+                id="job-section"
+            >
+
+                <div class="sectionhead">
+
+                    <div>
+
+                        <h2>
+                            Active Job Description
+                        </h2>
+
+                        <div class="muted">
+                            Create a role, inspect extracted
+                            requirements, then upload resumes.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="newjob">
+
+                    <input
+                        id="jobtitle"
+                        type="text"
+                        placeholder="Role title (optional)"
+                    >
+
+                    <textarea
+    id="jobdesc"
+    placeholder="Paste complete job description..."
+    rows="6"
+></textarea>
+
+                    <button onclick="createJob()">
+                        Analyze Job â†’
+                    </button>
+
+                </div>
+
+
+                <!-- Extracted requirements -->
+
+                <div
+                    id="reqs"
+                    class="requirements"
+                ></div>
+
+                <section class="jd-insights" id="jd-insights" aria-live="polite">
+                    <div class="jd-insight-heading">
+                        <strong>Job Description Intelligence</strong>
+                        <span class="muted">Structured signals extracted from the role</span>
+                    </div>
+                    <div id="jd-insight-grid" class="jd-insight-grid">
+                        <span class="muted">Analyze a job description to inspect its requirements.</span>
+                    </div>
+                </section>
+
+                <!-- Edit requirements -->
+
+                <div
+                    id="reqedit"
+                    style="display: none; margin-top: 12px;"
+                >
+
+                    <div class="grid2">
+
+                        <label class="muted">
+
+                            Required Skills
+                            (comma separated)
+
+                            <input
+                                id="reqrequired"
+                                type="text"
+                                placeholder="Python, SQL, Machine Learning"
+                            >
+
+                        </label>
+
+
+                        <label class="muted">
+
+                            Preferred Skills
+                            (comma separated)
+
+                            <input
+                                id="reqpreferred"
+                                type="text"
+                                placeholder="Docker, FastAPI, NLP"
+                            >
+
+                        </label>
+
+                    </div>
+
+
+                    <button
+                        style="margin-top: 9px;"
+                        onclick="saveRequirements()"
+                    >
+                        Save Reviewed Requirements
+                    </button>
+
+                </div>
+
+            </section>
+            </section>
+
+            <section class="page" id="page-resumes">
+            <!-- ======================================
+                 RESUME PROCESSING
+            ======================================= -->
+
+            <div
+                class="jobbox"
+                id="resume-section"
+            >
+
+
+                <!-- BULK UPLOAD -->
+
+                <section class="panel">
+
+                    <div class="sectionhead">
+
+                        <h2>
+                            Bulk Resume Upload
+                        </h2>
+
+                        <span
+                            id="uploadstatus"
+                            class="muted"
+                        >
+                            PDF Â· DOCX Â· TXT, up to 8 MB each
+                        </span>
+
+                    </div>
+
+
+                    <div class="upload">
+
+                        <label
+                            for="files"
+                            style="cursor: pointer;"
+                        >
+
+                            <b>
+                                Choose Resumes to Analyze
+                            </b>
+
+                            <div class="muted">
+
+                                Select multiple files at once.
+                                Individual failures won't stop the batch.
+
+                            </div>
+
+                        </label>
+
+
+                        <input
+                            id="files"
+                            type="file"
+                            multiple
+                            accept=".pdf,.docx,.txt"
+                            onchange="uploadFiles()"
+                        >
+
+                    </div>
+
+
+                    <div
+                        id="filelist"
+                        class="muted"
+                        style="margin-top: 8px;"
+                    ></div>
+
+                </section>
+
+
+                <!-- SKILLS COVERAGE -->
+
+                <section class="panel">
+
+                    <div class="sectionhead">
+
+                        <h2>
+                            Skills Coverage
+                        </h2>
+
+                        <span class="muted">
+                            Top evidence in ranked candidates
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        id="skills"
+                        class="requirements muted"
+                    >
+
+                        Create a job and add resumes
+                        to see coverage.
+
+                    </div>
+
+                </section>
+
+            </div>
+            </section>
+
+            <section class="page" id="page-settings">
+            <!-- ======================================
+                 SETTINGS
+            ======================================= -->
+
+            <section
+                class="panel"
+                id="settings-section"
+            >
+
+                <div class="sectionhead">
+
+                    <h2>
+                        Workspace Settings
+                    </h2>
+
+                </div>
+
+
+                <p class="muted">
+
+                    TalentIQ runs locally. Uploaded resumes
+                    and candidate records are stored in the
+                    configured local data directory.
+
+                    Review extracted evidence before making
+                    any hiring decision.
+
+                </p>
+
+
+                <div class="requirements">
+
+                    <span class="pill">
+                        PDF
+                    </span>
+
+                    <span class="pill">
+                        DOCX
+                    </span>
+
+                    <span class="pill">
+                        TXT
+                    </span>
+
+                    <span class="pill green">
+                        Local Workspace
+                    </span>
+
+                </div>
+
+            </section>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal" id="modal" onclick="if(event.target === this) this.style.display='none'">
+        <div class="dialog" id="dialog"></div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="/frontend/js/app.js?v=0.5" defer></script>
+</body>
+</html>
+

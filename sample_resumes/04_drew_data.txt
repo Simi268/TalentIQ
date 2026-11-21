@@ -1,0 +1,9 @@
+Drew Example
+drew@example.test | +1 555 010 1004
+Data analyst with 3 years of professional experience.
+Experience
+Created SQL reports and pandas data cleaning pipelines.
+Education
+Bachelor of Statistics
+Skills
+Python, SQL, pandas, communication

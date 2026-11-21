@@ -1,0 +1,18 @@
+DEV PATEL
+Email: dev.patel@example.com
+Phone: +91-90000-10005
+
+SUMMARY
+Python developer claiming 3 years of professional experience.
+
+SKILLS
+Python, Django, REST APIs, PostgreSQL
+
+PROFESSIONAL EXPERIENCE
+Backend Developer | Example Digital
+- Worked on backend APIs, database queries, and application maintenance.
+- Collaborated with frontend developers.
+
+PROJECTS
+API Starter
+- Built a sample REST API using Django.

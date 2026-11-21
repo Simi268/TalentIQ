@@ -1,0 +1,10 @@
+Frank Example
+frank@example.test | +1 555 010 1006
+Platform engineer with 7 years of professional experience.
+Experience
+Operated Docker and Kubernetes services on Amazon Web Services.
+Created continuous integration and monitoring systems.
+Education
+Bachelor of Engineering
+Skills
+AWS, Docker, Kubernetes, CI/CD, Python

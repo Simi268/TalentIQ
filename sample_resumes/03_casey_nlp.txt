@@ -1,0 +1,10 @@
+Casey Example
+casey@example.test | +1 555 010 1003
+Applied scientist with 5 years of professional experience.
+Experience
+Designed natural language processing models in Python with PyTorch.
+Evaluated text classifiers and search relevance.
+Education
+Master of Data Science
+Skills
+Python, NLP, PyTorch, Machine Learning, SQL

@@ -1,0 +1,10 @@
+Avery Example
+avery@example.test | +1 555 010 1001
+Senior ML Engineer with 6 years of professional experience.
+Experience
+Built Python machine learning services and NLP pipelines for customer support.
+Deployed models with Docker on AWS; mentored a team of four.
+Education
+Master of Computer Science
+Skills
+Python, ML, NLP, AWS, Docker, SQL

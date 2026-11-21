@@ -1,0 +1,20 @@
+AARAV SHARMA
+Email: aarav.sharma@example.com
+Phone: +91-90000-10001
+
+SUMMARY
+Computer Science graduate with hands-on machine learning internship experience.
+
+SKILLS
+Python, SQL, Scikit-learn, Pandas, FastAPI
+
+INTERNSHIP EXPERIENCE
+Machine Learning Intern | Example AI Labs
+May 2025 - Aug 2025
+- Built data preprocessing pipelines and trained classification models.
+- Evaluated model performance using precision, recall, and F1-score.
+
+PROJECTS
+Customer Churn Predictor
+Jan 2025 - Mar 2025
+- Built a churn prediction model using Python and Scikit-learn.

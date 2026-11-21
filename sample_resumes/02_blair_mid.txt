@@ -1,0 +1,9 @@
+Blair Example
+blair@example.test | +1 555 010 1002
+Software engineer with 4 years of professional experience.
+Experience
+Developed Python APIs and data workflows. Used PostgreSQL and Docker.
+Education
+Bachelor of Science
+Skills
+Python, FastAPI, PostgreSQL, Docker, Git

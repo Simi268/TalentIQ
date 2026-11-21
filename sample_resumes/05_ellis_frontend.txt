@@ -1,0 +1,9 @@
+Ellis Example
+ellis@example.test | +1 555 010 1005
+Frontend developer with 4 years of professional experience.
+Experience
+Built React and TypeScript web applications with accessible components.
+Education
+Bachelor of Design
+Skills
+React, TypeScript, JavaScript, Git

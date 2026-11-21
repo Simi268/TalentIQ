@@ -1,0 +1,11 @@
+Harper Example
+harper@example.test | +1 555 010 1008
+Research engineer with 2 years of professional experience.
+Experience
+Prototyped neural network experiments and NLP data preparation in Python.
+Projects
+Research project comparing transformer text embeddings.
+Education
+Master of Science
+Skills
+Python, PyTorch, NLP, machine learning
