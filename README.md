@@ -1,56 +1,213 @@
-# TalentIQ — AI Recruitment Intelligence
+# TalentIQ — AI-Powered Resume Matching & Candidate Intelligence
 
-TalentIQ is a local, evidence-focused resume screening prototype. It extracts job requirements and resume facts, scores candidates against five visible dimensions, ranks results, and explains the evidence behind each score. It avoids protected characteristics and keeps uploaded documents on the local machine.
+TalentIQ is an AI-assisted recruitment platform that evaluates candidate resumes against job descriptions using semantic relevance, skill matching, experience analysis and evidence-based scoring.
 
-## Start locally
+Instead of relying exclusively on keyword matching, TalentIQ provides recruiters with explainable candidate evaluations, supporting evidence and comparative insights.
 
-Python 3.10+ is required. From this folder:
+## Key Features
+
+- **Job Description Analysis:** Extract structured hiring requirements, required skills and preferred skills.
+- **Batch Resume Upload:** Upload multiple PDF and DOCX resumes.
+- **Resume Parsing:** Extract candidate profiles, skills, education, experience and project information.
+- **AI-Powered Matching:** Evaluate candidates against specific job requirements.
+- **Candidate Ranking:** Rank candidates using weighted matching scores.
+- **Candidate Intelligence:** Explore detailed candidate profiles and supporting resume evidence.
+- **Explainable Scoring:** Understand why candidates receive particular scores.
+- **Candidate Comparison:** Compare multiple candidates across relevant evaluation criteria.
+- **Recruiter Analytics:** View candidate distributions, evidence coverage and skill coverage.
+
+## Technology Stack
+
+| Component | Technology |
+|---|---|
+| Frontend | React, TypeScript, Vite |
+| Styling | CSS |
+| Icons | Lucide React |
+| Backend | Python, FastAPI |
+| Database | SQLite |
+| AI Integration | Groq API, LangChain |
+| API Architecture | REST |
+
+## System Architecture
+
+```text
+                 RECRUITER
+                     |
+                     v
+          React + TypeScript Frontend
+                (frontend-react)
+                     |
+                     v
+              FastAPI Backend
+                    (app)
+                     |
+          +----------+----------+
+          |          |          |
+          v          v          v
+       JD Parser  Resume     Evaluation
+                  Parser       Engine
+          |          |          |
+          +----------+----------+
+                     |
+                     v
+               SQLite Database
+```
+
+## Candidate Scoring Methodology
+
+TalentIQ uses a weighted evaluation model with five components.
+
+| Evaluation Component | Weight |
+|---|---:|
+| Required Skills | 35% |
+| Semantic Relevance | 25% |
+| Relevant Experience | 20% |
+| Education & Qualifications | 10% |
+| Preferred Skills | 10% |
+| **Total** | **100%** |
+
+### Evidence-Based Skill Evaluation
+
+Skills are evaluated using the following evidence classifications:
+
+| Classification | Value |
+|---|---:|
+| Exact Match | 1.00 |
+| Related Match | 0.50 |
+| Needs Verification | 0.25 |
+
+The evaluation engine also considers evidence coverage and provides requirement-level explanations.
+
+Insufficient information is not automatically treated as proof that a candidate lacks a qualification.
+
+### Explainability
+
+Each candidate evaluation can include:
+
+- Overall matching score.
+- Component-level score breakdown.
+- Matched and related skills.
+- Missing and unverified requirements.
+- Experience and education analysis.
+- Supporting resume evidence.
+- Ranking explanations.
+
+Scores are decision-support signals and should be reviewed alongside the underlying evidence.
+
+## Installation and Setup
+
+### Prerequisites
+
+- Python 3.10+
+- Node.js and npm
+- Git
+- Groq API credentials, if required by the configured JD extraction workflow.
+
+### 1. Clone the Repository
+
+```bash
+git clone <YOUR_GITHUB_REPOSITORY_URL>
+cd <PROJECT_DIRECTORY>
+```
+
+### 2. Backend Setup
 
 ```powershell
 python -m venv .venv
-.venv\Scripts\Activate.ps1
+.\.venv\Scripts\Activate.ps1
+
+python -m pip install --upgrade pip
 pip install -r requirements.txt
-uvicorn app.main:app --reload
 ```
 
-Open http://127.0.0.1:8000. Interactive API documentation is at `/docs`. The database and uploaded originals are created in `data/`. Set `TALENTIQ_DATA_DIR` and `MAX_FILE_BYTES` to change those locations and the 8 MB default limit.
+Configure the required environment variables in a local `.env` file. Never commit API keys or secrets.
 
-## Workflow
+Start the backend:
 
-1. Paste a job description and create a role.
-2. Inspect the extracted required and preferred skill chips.
-3. Select multiple PDF, DOCX, or TXT resumes at once (10+ are supported).
-4. Review ranking, open an evidence profile, compare selected candidates, or export CSV.
-
-The API supports job CRUD reads/create, bulk upload, candidate profiles and explanations, compare, delete, ranked results, and CSV export. Upload failures are recorded per file and do not interrupt the batch. Exact duplicate file contents within one job are skipped. Files are limited by extension and size.
-
-## Architecture
-
-```mermaid
-flowchart LR
-  Recruiter[Recruiter dashboard] --> API[FastAPI routes]
-  API --> Parser[Document parser]
-  Parser --> Extract[Resume extraction]
-  API --> JD[JD analyzer]
-  Extract --> Skills[Skill normalization]
-  JD --> Match[Hybrid matching]
-  Skills --> Match
-  Match --> Score[Weighted scoring + evidence]
-  Score --> Rank[Ranking and comparison]
-  API <--> DB[(SQLite; SQLAlchemy models)]
-  Rank --> UI[Dashboard, profiles, CSV]
+```bash
+python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-## Matching and scoring
+Backend API documentation:
 
-The initial configurable weights are required skills 35%, semantic relevance 25%, relevant experience 20%, education 10%, and preferred skills 10%. Each component is normalized to 0–100 before the weighted sum. Required skills get credit only when normalized aliases occur in extracted text; semantic similarity can identify possible related evidence but cannot turn a missing hard skill into a confirmed match. Experience scores cap at the JD requirement. Unavailable evidence remains unknown and is shown as unverified.
+`http://127.0.0.1:8000/docs`
 
-When installed and the `all-MiniLM-L6-v2` model is already available locally, Sentence Transformers produces cosine similarities. The app does not fetch model weights at runtime. If no local model is present, it uses a deterministic token-overlap fallback. This fallback is a prototype signal, not a validated semantic model. Skill aliases normalize spelling and common abbreviations but intentionally do not equate distinct technologies.
+### 3. Frontend Setup
 
-## Sample data and privacy
+Open another terminal:
 
-`sample_resumes/` contains ten synthetic text resumes for demonstration. They contain fictional names and contact information. Delete a resume from the ranking table to remove its original upload and candidate record. The app does not log extracted personal information. This prototype is not an automated hiring decision system; recruiters should verify evidence and assess candidates fairly.
+```bash
+cd frontend-react
+npm install
+npm run dev
+```
 
-## Limitations and next steps
+Open the local URL displayed by Vite.
 
-The prototype uses heuristic extraction and a compact skill dictionary; experience dates and nuanced education equivalencies are not fully resolved. It does not perform OCR on scanned PDFs. The current browser UI is a dependency-light dashboard served by FastAPI to make a local demo easy to run; a production deployment should use a compiled React/TypeScript client, authentication, authorization, retention controls, migrations, audit events, malware scanning, calibrated multilingual embeddings, and evaluation on consented, representative data. Scores are decision support and require human review.
+### 4. Run Backend Tests
+
+From the project root:
+
+```bash
+python -m pytest -q
+```
+
+## API Overview
+
+| Functionality | Endpoint |
+|---|---|
+| List Jobs | GET `/api/jobs` |
+| Create Job | POST `/api/jobs` |
+| Get Job Details | GET `/api/jobs/{job_id}` |
+| Update Requirements | PATCH `/api/jobs/{job_id}/requirements` |
+| Candidate Results | GET `/api/matching/results/{job_id}` |
+| Upload Resumes | POST `/api/resumes/upload` |
+| Delete Candidate | DELETE `/api/resumes/{candidate_id}` |
+| Compare Candidates | POST `/api/candidates/compare` |
+| Ranking Explanation | GET `/api/jobs/{job_id}/ranking/explanation` |
+| Ranking Evaluation | POST `/api/jobs/{job_id}/ranking/evaluation` |
+| Recalculate Ranking | POST `/api/jobs/{job_id}/recalculate` |
+| Export Candidates | GET `/api/candidates/export/{job_id}` |
+
+Refer to the running FastAPI documentation for the exact request and response schemas.
+
+## Testing Strategy
+
+TalentIQ should be evaluated using synthetic or appropriately licensed resumes.
+
+Recommended test scenarios:
+
+1. Upload at least 10 PDF/DOCX resumes in one batch.
+2. Compare strong, moderate and weak candidate profiles.
+3. Test exact and semantically related skill descriptions.
+4. Evaluate internship, project-based and professional experience.
+5. Test incomplete and ambiguous resume evidence.
+6. Evaluate different job domains, including AI/ML, operations, HR and digital marketing.
+
+## Responsible Use
+
+TalentIQ is designed to assist recruiters, not replace human decision-making.
+
+- Use authorized candidate information.
+- Protect uploaded resumes and personal information.
+- Store API credentials securely.
+- Review supporting evidence before making hiring decisions.
+- Do not interpret a matching score as a guarantee of job performance.
+
+## Deployment
+
+The application requires separate frontend and backend deployments.
+
+The frontend must communicate with the deployed FastAPI backend rather than the local development server.
+
+The backend requires production environment variables, appropriate CORS configuration and persistent storage.
+
+The current local configuration uses SQLite. Before public deployment, configure persistent database storage or migrate to a managed database. Uploaded resumes also require persistent storage.
+
+## Project Status
+
+TalentIQ is a working prototype developed as an AI-based resume matching and candidate ranking system.
+
+## License
+
+Add the appropriate license before public distribution.
