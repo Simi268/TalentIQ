@@ -2330,7 +2330,7 @@ function App() {
         const candidate = activeCandidate
         const explanation = candidate.explanation || {}
         const profile = candidate.profile || {}
-        const candidateProfile = profile.candidate || {}
+        
 
         const requiredSkills =
           explanation.required_skill_analysis || []
