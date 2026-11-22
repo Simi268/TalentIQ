@@ -1,7 +1,4 @@
-const API_BASE = `${
-  (import.meta.env.VITE_API_BASE_URL || 'https://talentiq-6r91.onrender.com')
-    .replace(/\/+$/, '')
-}/api`;
+const API_BASE = 'https://talentiq-6r91.onrender.com/api';
 
 async function request<T>(
   endpoint: string,
