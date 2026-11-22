@@ -18,7 +18,7 @@ from typing import Any
 
 import numpy as np
 
-from sentence_transformers import SentenceTransformer
+import numpy as np
 
 from app.resume_intelligence import SKILL_ALIASES
 
@@ -206,15 +206,19 @@ DEFAULT_SIMILARITY_THRESHOLD = 0.55
 @lru_cache(maxsize=1)
 def load_embedding_model():
     """
-    Load Sentence Transformer once and reuse it.
+    Load Sentence Transformer only when semantic matching
+    actually requires it.
 
-    If model loading fails, raise an explicit error.
-    Never silently replace semantic matching with
-    keyword overlap.
+    Cache the model so it is loaded only once.
     """
 
     try:
-        return SentenceTransformer(MODEL_NAME)
+        from sentence_transformers import SentenceTransformer
+
+        return SentenceTransformer(
+            MODEL_NAME,
+            device="cpu"
+        )
 
     except Exception as exc:
         raise RuntimeError(
