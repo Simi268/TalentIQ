@@ -1,5 +1,6 @@
 const API_BASE = `${
-  (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
+  (import.meta.env.VITE_API_BASE_URL || 'https://talentiq-6r91.onrender.com')
+    .replace(/\/+$/, '')
 }/api`;
 
 async function request<T>(
